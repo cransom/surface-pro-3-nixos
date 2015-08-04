@@ -45,7 +45,9 @@ rather than a suspend.
 
 ## Suspend
 
-Suspend to ram works. I haven't had a successful resume from hibernation.
+Suspend to ram works. I've had some failures resuming from hibernation. Either
+it will finish with a blank screen or wifi driver will be in a state that
+requires a reboot.
 
 # Install
 

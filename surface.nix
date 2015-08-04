@@ -23,10 +23,28 @@
   boot.loader.grub.enable = false;
   boot.loader.gummiboot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  powerManagement.enable = true;
+
+  hardware.pulseaudio.enable = true;
   hardware.bluetooth.enable = true;
-  powerManagement.cpuFreqGovernor = "conservative";
-  services.acpid.enable = true;
+
+  #suspend if powerbutton his bumped, rather than shutdown.
+  services.logind.extraConfig = ''
+  HandlePowerKey=suspend
+  '';
+  powerManagement.enable = true;
+  powerManagement.powerDownCommands = ''
+      /run/current-system/sw/bin/date  > /tmp/powerdown
+  '';
+  #stay sleeping if the lid is closed.
+  powerManagement.powerUpCommands = ''
+      /run/current-system/sw/bin/date  > /tmp/powerup
+      sleep 10
+      if $(grep -q closed /proc/acpi/button/lid/LID0/state); then
+        systemctl suspend
+      fi
+  '';
+
+  powerManagement.cpuFreqGovernor = "powersave";
   boot.kernelPackages = pkgs.linuxPackages_4_1;
   nixpkgs.config.packageOverrides = pkgs: {
     linux_4_1 = pkgs.linux_4_1.override {
@@ -41,15 +59,32 @@
     };
   };
 
+  services.acpid.enable = true;
   services.acpid.lidEventCommands = ''
     LID_STATE=/proc/acpi/button/lid/LID0/state
+    AC_STATE=$(/run/current-system/sw/bin/cat /sys/class/power_supply/AC0/online)
     if [ $(/run/current-system/sw/bin/awk '{print $2}' $LID_STATE) = 'closed' ]; then
-      systemctl suspend
+        export DISPLAY=:0
+        /home/cransom/Sync/bin/fuzzy_lock.sh
+        if [ $AC_STATE = "0" ]; then
+          /run/current-system/sw/bin/systemctl suspend
+        fi
+        /run/current-system/sw/bin/logger "lid closed, screen off"
+      else
+        /run/current-system/sw/bin/logger "lid opened"
     fi
   '';
-  services.acpid.powerEventCommands = ''
-    systemctl suspend
-  '';
-
-  hardware.pulseaudio.enable = true;
+#  services.acpid.powerEventCommands = ''
+#    /run/current-system/sw/bin/systemctl suspend
+#  '';
+#  services.acpid.acEventCommands = ''
+#    LID_STATE=/proc/acpi/button/lid/LID0/state
+#    AC_STATE=$(/run/current-system/sw/bin/cat /sys/class/power_supply/AC0/online)
+#    if [ $(/run/current-system/sw/bin/awk '{print $2}' $LID_STATE) = 'closed' ]; then
+#      if [ $AC_STATE = '0' ]; then
+#        /run/current-system/sw/bin/systemctl hibernate
+#      fi
+#    fi
+#  '';
+#
 }
