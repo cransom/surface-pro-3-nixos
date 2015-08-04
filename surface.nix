@@ -17,6 +17,10 @@
     fingersMap = [ 1 3 2 ];
     minSpeed = "0.8";
     maxSpeed = "1.4";
+    additionalOptions = ''
+      Option "vendor" "045e"
+      Option "product" "07e2"
+    '';
   };
   boot.kernelModules = [ "hid-multitouch" ];
   boot.initrd.kernelModules = [ "hid-multitouch" ];
