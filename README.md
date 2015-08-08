@@ -1,7 +1,9 @@
 NixOS on a Surface Pro 3
 ========================
 
-I purchased a Surface Pro 3 in July of 2015, looking for an ultrabook sized machine that had some amount of Linux support.  There are are a few people running Ubuntu/Arch but no recent mentions of this hardware on Nixos.
+I purchased a Surface Pro 3 in July of 2015, looking for an ultrabook sized
+machine that had some amount of Linux support.  There are are a few people
+running Ubuntu/Arch but no recent mentions of this hardware on Nixos.
 
 # What works
 
@@ -40,8 +42,7 @@ Seems to work, I haven't paired any devices but hcitool scans/etc show activity.
 
 ## Hardware buttons
 
-Volume and the windows key work. The power button initiates a shutdown
-rather than a suspend.
+Volume and the windows key work.
 
 ## Suspend
 
