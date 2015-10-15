@@ -22,7 +22,7 @@ rec {
   boot.loader.efi.canTouchEfiVariables = true;
 
   hardware.pulseaudio.enable = true;
-  hardware.bluetooth.enable = false;
+  hardware.bluetooth.enable = true;
 
   #suspend if powerbutton his bumped, rather than shutdown.
   services.logind.extraConfig = ''
@@ -71,17 +71,15 @@ rec {
 
   services.acpid.lidEventCommands = ''
     export PATH=/run/current-system/sw/bin
-    set -e
     LID_STATE=$(awk '{ print $2 }' /proc/acpi/button/lid/LID0/state)
     AC_STATE=$(cat /sys/class/power_supply/AC0/online)
-    export DISPLAY=:0
+    export DISPLAY=':0'
     if [ $LID_STATE = 'closed' ]; then
+      xset dpms force off
       xautolock -locknow
       if [ $AC_STATE = '0' ]; then
         systemctl suspend
       fi
-    else
-      xset dpms force on
     fi
 
   '';
