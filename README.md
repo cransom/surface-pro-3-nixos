@@ -7,8 +7,8 @@ running Ubuntu/Arch but no recent mentions of this hardware on Nixos.
 
 # What works
 
-In kernel 4.1, most things work as you'd expect with a bit of patching. 4.2
-reported some regressions in volume buttons and some other hardware.
+In kernel 4.3, most things work with only minor patches to the typecover
+(hid-multitouch) and cameras.
 
 ## Type Cover
 
@@ -46,9 +46,9 @@ Volume and the windows key work.
 
 ## Suspend
 
-Suspend to ram works. I've had some failures resuming from hibernation. Either
+Suspend to idle works. I've had some failures resuming from hibernation. Either
 it will finish with a blank screen or wifi driver will be in a state that
-requires a reboot.
+requires a reboot. Suspend to ram (acpi S3) doesn't exist in this hardware.
 
 # Install
 
