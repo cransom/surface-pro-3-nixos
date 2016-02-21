@@ -35,19 +35,17 @@ rec {
   #powerManagement.powerDwnCommands = "";
   powerManagement.cpuFreqGovernor = "powersave";
 
-  boot.kernelPackages = pkgs.linuxPackages_4_1;
+  boot.kernelPackages = pkgs.linuxPackages_4_3;
   nixpkgs.config.packageOverrides = pkgs: {
-    linux_4_1 = pkgs.linux_4_1.override {
+    linux_4_3 = pkgs.linux_4_3.override {
       kernelPatches = [
-        { patch = ./Add-multitouch-support-for-Microsoft-Type-Cover-3.patch;
-          name = "multitouch-type-cover-3";
-          extraConfig = ''
-            I2C_DESIGNWARE_PLATFORM m
-            X86_INTEL_LPSS y
-          ''; }
-        { patch = ./Add-Microsoft-Surface-Pro-3-button-support.patch; name = "sp3-buttons"; }
-        { patch = ./Add-Microsoft-Surface-Pro-3-camera-support.patch; name = "surfacepro3-cameras"; }
+        { patch = ./multitouch.patch; name = "multitouch-type-cover";} 
+        { patch = ./cam.patch; name = "surfacepro3-cameras"; }
       ];
+      extraConfig = ''
+        I2C_DESIGNWARE_PLATFORM m
+        X86_INTEL_LPSS y
+      '';
     };
   };
 
@@ -77,6 +75,7 @@ rec {
     if [ $LID_STATE = 'closed' ]; then
       xset dpms force off
       xautolock -locknow
+      systemctl suspend
       if [ $AC_STATE = '0' ]; then
         systemctl suspend
       fi
