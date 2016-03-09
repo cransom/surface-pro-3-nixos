@@ -5,9 +5,13 @@ I purchased a Surface Pro 3 in July of 2015, looking for an ultrabook sized
 machine that had some amount of Linux support.  There are are a few people
 running Ubuntu/Arch but no recent mentions of this hardware on Nixos.
 
+Thanks to https://github.com/matthewwardrop/linux-surfacepro3 as I've grabbed
+the relevant hardware patches from there and just bundled them up in a NixOS
+compatible fashion.
+
 # What works
 
-In kernel 4.3, most things work with only minor patches to the typecover
+In kernel 4.4, most things work with only minor patches to the typecover
 (hid-multitouch) and cameras.
 
 ## Type Cover
