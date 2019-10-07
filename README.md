@@ -1,5 +1,13 @@
-NixOS on a Surface Pro 3
+NixOS on a Surface Pro 3 (archived!)
 ========================
+
+
+# No further updates
+
+I'm not actively running this machine anymore, but I'll keep this around for
+historical reference.
+
+# history
 
 I purchased a Surface Pro 3 in July of 2015, looking for an ultrabook sized
 machine that had some amount of Linux support.  There are are a few people
